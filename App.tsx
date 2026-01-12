@@ -72,6 +72,7 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen w-full relative overflow-hidden flex flex-col transition-colors duration-500 ${isDark ? 'bg-sle-dark' : 'bg-sle-lightBg'}`}>
       
+      {/* Background with Video and Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-b from-sle-dark to-sle-primaryDark transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`} />
 
@@ -107,7 +108,7 @@ const App: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
-              className="w-full max-w-[1600px] mx-auto"
+              className="w-full max-w-[1500px] mx-auto"
             >
               
               <div className="text-center mb-12 md:mb-20">
