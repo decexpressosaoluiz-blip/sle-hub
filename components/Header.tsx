@@ -12,35 +12,34 @@ export const Header: React.FC<HeaderProps> = ({ isDark, toggleTheme }) => {
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full py-10 px-8 sm:px-16 flex justify-between items-center relative z-20"
+      className="w-full py-8 px-10 sm:px-20 flex justify-between items-center relative z-20"
     >
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-4">
         <motion.div 
-            whileHover={{ rotate: -5, scale: 1.05 }}
-            className="bg-sle-secondary p-2.5 rounded-xl shadow-xl shadow-sle-secondary/20"
+            whileHover={{ scale: 1.1, rotate: -8 }}
+            className="bg-sle-secondary p-2 rounded-xl shadow-lg shadow-sle-secondary/30"
         >
-          <Truck className="text-white w-6 h-6" />
+          <Truck className="text-white w-5 h-5" />
         </motion.div>
         <div>
-          <h1 className="text-lg md:text-xl font-black tracking-tight flex flex-col md:flex-row md:gap-1">
-            <span className={isDark ? 'text-white/90' : 'text-sle-dark'}>SÃO LUIZ</span>
+          <h1 className="text-sm md:text-base font-black tracking-widest flex items-center gap-1.5">
+            <span className={isDark ? 'text-white' : 'text-sle-primaryDark'}>SÃO LUIZ</span>
             <span className="text-sle-secondary">EXPRESS</span>
           </h1>
-          <div className="h-[2px] w-full bg-gradient-to-r from-sle-secondary to-transparent mt-0.5 opacity-50" />
+          <div className="h-[1px] w-full bg-sle-secondary/40 mt-1" />
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
-        <div className="hidden lg:flex items-center gap-3 px-4 py-2 rounded-full border border-white/5 bg-white/5">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-          <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-white/40' : 'text-sle-dark/50'}`}>Nodes Ativos</span>
-        </div>
-
+      <div className="flex items-center gap-4">
         <motion.button
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.1, rotate: 180 }}
           whileTap={{ scale: 0.9 }}
           onClick={toggleTheme}
-          className={`p-3 rounded-2xl border transition-all duration-300 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-sle-dark/5 border-sle-dark/10 text-sle-dark'}`}
+          className={`p-3 rounded-2xl border transition-all duration-500 ${
+            isDark 
+              ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' 
+              : 'bg-sle-primary/5 border-sle-primary/10 text-sle-primaryDark hover:bg-sle-primary/10'
+          }`}
         >
           {isDark ? <Sun size={20} /> : <Moon size={20} />}
         </motion.button>

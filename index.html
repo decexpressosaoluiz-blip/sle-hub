@@ -14,6 +14,7 @@
             colors: {
               sle: {
                 primary: '#2E31B4',
+                primaryDark: '#1A1B62',
                 primaryLight: '#4F52E1',
                 secondary: '#EC1B23',
                 secondaryLight: '#FF4D54',
@@ -37,17 +38,17 @@
         font-family: 'Inter', sans-serif; 
         overflow-x: hidden; 
         background: #0A0B1E; 
-        transition: background-color 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       }
       ::-webkit-scrollbar { width: 4px; }
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb { background: #EC1B23; border-radius: 10px; }
       
       .glass-container {
-        background: rgba(255, 255, 255, 0.02);
+        background: rgba(46, 49, 180, 0.03);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(46, 49, 180, 0.1);
       }
       
       .dark .glass-card {
