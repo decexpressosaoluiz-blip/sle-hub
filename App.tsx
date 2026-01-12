@@ -70,14 +70,14 @@ const App: React.FC = () => {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    <div className={`min-h-screen w-full relative overflow-hidden flex flex-col transition-colors duration-500 ${isDark ? 'bg-sle-dark' : 'bg-sle-lightBg'}`}>
+    <div className={`min-h-screen w-full relative overflow-hidden flex flex-col transition-colors duration-500 ${isDark ? 'bg-sle-dark text-white' : 'bg-sle-lightBg text-sle-primaryDark'}`}>
       
-      {/* Background Layer */}
+      {/* Background Layers */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-b from-sle-dark to-sle-primaryDark transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`} />
-
-        <div className={`absolute inset-0 bg-sle-dark/80 transition-opacity duration-1000 ${isDark ? 'opacity-80' : 'opacity-0'} z-10`} />
-        <div className={`absolute inset-0 bg-sle-lightBg/90 transition-opacity duration-1000 ${isDark ? 'opacity-0' : 'opacity-90'} z-10`} />
+        <div className={`absolute inset-0 bg-sle-dark transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`} />
+        
+        <div className={`absolute inset-0 bg-sle-dark/70 transition-opacity duration-1000 ${isDark ? 'opacity-70' : 'opacity-0'} z-10`} />
+        <div className={`absolute inset-0 bg-sle-lightBg/95 transition-opacity duration-1000 ${isDark ? 'opacity-0' : 'opacity-95'} z-10`} />
 
         <video
           autoPlay
@@ -90,8 +90,6 @@ const App: React.FC = () => {
           <source src="https://assets.mixkit.co/videos/preview/mixkit-traffic-on-a-highway-at-night-seen-from-above-43048-large.mp4" type="video/mp4" />
         </video>
         
-        <div className={`absolute inset-0 bg-gradient-to-t from-sle-dark via-transparent to-transparent mix-blend-multiply transition-opacity duration-500 ${isDark ? 'opacity-100' : 'opacity-20'} z-10`} />
-        
         <div className="relative z-10 w-full h-full">
             <MovingParticles />
         </div>
@@ -101,61 +99,39 @@ const App: React.FC = () => {
         <Header isDark={isDark} toggleTheme={toggleTheme} />
 
         <main className="flex-grow flex flex-col items-center justify-start px-4 sm:px-6 md:px-12 py-10 md:py-16">
-          
           <AnimatePresence>
             <motion.div 
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="w-full max-w-[1600px] mx-auto"
+              transition={{ duration: 0.8 }}
+              className="w-full max-w-[1700px] mx-auto"
             >
-              
-              <div className="text-center mb-12 md:mb-20">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="inline-block mb-3 px-4 py-1.5 rounded-full bg-sle-secondary/10 dark:bg-white/10 border border-sle-secondary/20 dark:border-white/10 backdrop-blur-md"
-                >
-                  <span className="text-xs font-bold uppercase tracking-wider text-sle-secondary dark:text-white">Central de Operações</span>
-                </motion.div>
-
+              <div className="text-center mb-12 md:mb-16">
                 <motion.h2 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-black text-sle-primaryDark dark:text-white tracking-tight mb-4 md:mb-6 leading-tight"
+                  className="text-4xl md:text-6xl font-black tracking-tight mb-4"
                 >
-                  Painel de <span className="text-transparent bg-clip-text bg-gradient-to-r from-sle-secondary via-sle-secondaryLight to-orange-500">Resultados</span>
+                  Painel de <span className="text-sle-secondary">Resultados</span>
                 </motion.h2>
-                
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                  className="text-base md:text-lg text-sle-primary/70 dark:text-sle-light/70 max-w-2xl mx-auto px-4"
-                >
-                  Hub centralizado da São Luiz Express. Acesse ferramentas estratégicas e operacionais em um ambiente seguro.
-                </motion.p>
+                <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-white/60' : 'text-sle-primaryDark/60'}`}>
+                  Central de ferramentas e indicadores estratégicos da São Luiz Express.
+                </p>
               </div>
 
-              <motion.div 
-                layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 auto-rows-fr"
-              >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 {PROJECTS.map((project, index) => (
                     <ProjectCard key={project.id} project={project} index={index} />
                 ))}
-              </motion.div>
-
+              </div>
             </motion.div>
           </AnimatePresence>
         </main>
 
-        <footer className="w-full py-6 text-center relative z-20 border-t border-sle-primary/10 dark:border-white/5 bg-white/30 dark:bg-black/20 backdrop-blur-sm mt-auto">
-          <p className="text-sle-primary/40 dark:text-sle-light/40 text-sm font-medium">
-            © {new Date().getFullYear()} São Luiz Express. Tecnologia & Logística.
+        <footer className={`w-full py-6 text-center border-t border-white/5 backdrop-blur-md mt-auto ${isDark ? 'bg-black/20 text-white/40' : 'bg-white/40 text-sle-primaryDark/40'}`}>
+          <p className="text-sm font-medium">
+            © {new Date().getFullYear()} São Luiz Express. Logística Inteligente.
           </p>
         </footer>
       </div>
