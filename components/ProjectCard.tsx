@@ -13,7 +13,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
   const cardRef = useRef<HTMLAnchorElement>(null);
 
-  // Parallax Effect Logic for Icon and BG Blur
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ["start end", "end start"]
@@ -57,31 +56,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         border border-sle-primary/10 dark:border-white/10 backdrop-blur-md
       `}
     >
-      {/* Ripple Effect Canvas */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {ripples.map((ripple) => (
           <span
             key={ripple.id}
-            className="absolute rounded-full bg-sle-secondary/20 dark:bg-white/10 animate-ping"
+            className="absolute rounded-full bg-sle-secondary/20 dark:bg-white/20 animate-ping"
             style={{
               top: ripple.y,
               left: ripple.x,
-              width: '40px',
-              height: '40px',
+              width: '50px',
+              height: '50px',
               transform: 'translate(-50%, -50%)',
             }}
           />
         ))}
       </div>
 
-      {/* Tooltip on Hover */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: 5, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.95 }}
-            className="absolute top-4 right-4 max-w-[80%] bg-sle-darker/95 text-white p-3 rounded-xl text-xs shadow-xl z-50 border border-white/10 pointer-events-none"
+            className="absolute top-4 right-4 max-w-[85%] bg-sle-darker/95 text-white p-3 rounded-xl text-xs shadow-xl z-50 border border-white/10 pointer-events-none"
           >
              <div className="flex items-start gap-2">
                 <Info size={14} className="mt-0.5 text-sle-secondary shrink-0" />
@@ -91,10 +88,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         )}
       </AnimatePresence>
 
-      {/* Hover Background Accent */}
       <div className="absolute inset-0 bg-gradient-to-br from-transparent to-sle-primary/5 dark:to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none" />
       
-      {/* Floating Parallax Decoration */}
       <motion.div 
         style={{ y: bgY }}
         className={`absolute -top-12 -right-12 w-40 h-40 rounded-full blur-3xl opacity-10 dark:opacity-20 transition-colors duration-500 ${project.colorTheme === 'red' ? 'bg-sle-secondary' : 'bg-sle-primary'}`} 
@@ -131,7 +126,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               ? 'bg-red-50 dark:bg-white/5 group-hover:bg-sle-secondary' 
               : 'bg-blue-50 dark:bg-white/5 group-hover:bg-sle-primary'}
           `}>
-             {/* Glow Effect */}
             <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md ${project.colorTheme === 'red' ? 'bg-sle-secondary' : 'bg-sle-primary'}`}></div>
             
             <ArrowRight size={18} className={`relative z-10 transform group-hover:translate-x-1 transition-transform ${
@@ -142,11 +136,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           </div>
         </div>
         
-        {/* Visual Progress/Loading Bar */}
         <div className="w-full h-1 bg-gray-100 dark:bg-white/10 mt-4 rounded-full overflow-hidden">
              <motion.div 
                initial={{ width: 0 }}
                animate={{ width: isHovered ? '100%' : '0%' }}
+               transition={{ duration: 0.6 }}
                className={`h-full ${project.colorTheme === 'red' ? 'bg-sle-secondary' : 'bg-sle-primary'}`} 
              />
         </div>

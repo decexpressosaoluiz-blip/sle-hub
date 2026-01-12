@@ -6,7 +6,6 @@ import { MovingParticles } from './components/MovingParticles';
 import { Users, FileText, TrendingUp, PackageCheck, ClipboardList } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Configuração dos links externos para o Hub São Luiz Express
 const PROJECTS: Project[] = [
   {
     id: 'faturamento',
@@ -59,7 +58,6 @@ const App: React.FC = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isDark, setIsDark] = useState(true);
 
-  // Gerencia a classe Dark Mode no HTML para consistência com Tailwind
   useEffect(() => {
     const root = window.document.documentElement;
     if (isDark) {
@@ -74,12 +72,9 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen w-full relative overflow-hidden flex flex-col transition-colors duration-500 ${isDark ? 'bg-sle-dark' : 'bg-sle-lightBg'}`}>
       
-      {/* Camada de Fundo com Vídeo e Efeitos Visuais */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Fallback de cor para evitar flash branco durante o carregamento */}
         <div className={`absolute inset-0 bg-gradient-to-b from-sle-dark to-sle-primaryDark transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`} />
 
-        {/* Overlays de Tema: Filtros para garantir legibilidade */}
         <div className={`absolute inset-0 bg-sle-dark/80 transition-opacity duration-1000 ${isDark ? 'opacity-80' : 'opacity-0'} z-10`} />
         <div className={`absolute inset-0 bg-sle-lightBg/90 transition-opacity duration-1000 ${isDark ? 'opacity-0' : 'opacity-90'} z-10`} />
 
@@ -94,16 +89,13 @@ const App: React.FC = () => {
           <source src="https://assets.mixkit.co/videos/preview/mixkit-traffic-on-a-highway-at-night-seen-from-above-43048-large.mp4" type="video/mp4" />
         </video>
         
-        {/* Overlay de Gradiente de Marca (Sombreamento inferior) */}
         <div className={`absolute inset-0 bg-gradient-to-t from-sle-dark via-transparent to-transparent mix-blend-multiply transition-opacity duration-500 ${isDark ? 'opacity-100' : 'opacity-20'} z-10`} />
         
-        {/* Partículas Dinâmicas (Efeito de velocidade) */}
         <div className="relative z-10 w-full h-full">
             <MovingParticles />
         </div>
       </div>
 
-      {/* Interface Principal */}
       <div className="relative z-20 flex flex-col min-h-screen">
         <Header isDark={isDark} toggleTheme={toggleTheme} />
 
@@ -115,10 +107,9 @@ const App: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
-              className="w-full max-w-[1500px] mx-auto"
+              className="w-full max-w-[1600px] mx-auto"
             >
               
-              {/* Cabeçalho de Boas-vindas (Hero) */}
               <div className="text-center mb-12 md:mb-20">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -148,7 +139,6 @@ const App: React.FC = () => {
                 </motion.p>
               </div>
 
-              {/* Grid de Cards: Adaptável para 5 colunas */}
               <motion.div 
                 layout
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 auto-rows-fr"
@@ -162,7 +152,6 @@ const App: React.FC = () => {
           </AnimatePresence>
         </main>
 
-        {/* Rodapé Institucional */}
         <footer className="w-full py-6 text-center relative z-20 border-t border-sle-primary/10 dark:border-white/5 bg-white/30 dark:bg-black/20 backdrop-blur-sm mt-auto">
           <p className="text-sle-primary/40 dark:text-sle-light/40 text-sm font-medium">
             © {new Date().getFullYear()} São Luiz Express. Logística Inteligente & Transporte.
