@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>São Luiz Express | Painel de Resultados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              sle: {
+                primary: '#2E31B4',     // Primary Blue
+                primaryDark: '#1A1B62', // Deep Blue Text
+                secondary: '#EC1B23',   // Primary Red
+                secondaryLight: '#F04A50',
+                dark: '#0F103A',        // Deep Background (Dark Mode)
+                darker: '#060719',      // Darker variation
+                light: '#FCFCFE',       // Text White
+                lightBg: '#F2F2F8',     // Light Mode Background
+                surface: '#FFFFFF',     // Light Mode Card Surface
+                accent: '#4B4C9F',      // Lighter Blue Accent
+                glass: 'rgba(15, 16, 58, 0.75)', 
+                glassLight: 'rgba(255, 255, 255, 0.85)',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              'pulse-glow': {
+                '0%, 100%': { opacity: 1 },
+                '50%': { opacity: .5 }
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2E31B4;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #EC1B23;
+      }
+      
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .dark .glass-panel {
+        background: rgba(15, 16, 58, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .light-glass-panel {
+         background: rgba(255, 255, 255, 0.7);
+         backdrop-filter: blur(12px);
+         border: 1px solid rgba(255, 255, 255, 0.8);
+         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
