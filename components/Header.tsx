@@ -12,43 +12,38 @@ export const Header: React.FC<HeaderProps> = ({ isDark, toggleTheme }) => {
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="w-full py-6 px-4 sm:px-8 md:px-12 flex justify-between items-center relative z-20"
+      className="w-full py-10 px-8 sm:px-16 flex justify-between items-center relative z-20"
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-5">
         <motion.div 
-            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-            transition={{ duration: 0.5 }}
-            className="bg-sle-secondary p-2.5 rounded-xl shadow-lg shadow-sle-secondary/30"
+            whileHover={{ rotate: -5, scale: 1.05 }}
+            className="bg-sle-secondary p-2.5 rounded-xl shadow-xl shadow-sle-secondary/20"
         >
-          <Truck className="text-white w-6 h-6 md:w-8 md:h-8" />
+          <Truck className="text-white w-6 h-6" />
         </motion.div>
         <div>
-          <h1 className="text-xl md:text-3xl font-extrabold text-sle-primaryDark dark:text-white tracking-tighter leading-none">
-            SÃO LUIZ <span className="text-sle-secondary">EXPRESS</span>
+          <h1 className="text-lg md:text-xl font-black tracking-tight flex flex-col md:flex-row md:gap-1">
+            <span className={isDark ? 'text-white/90' : 'text-sle-dark'}>SÃO LUIZ</span>
+            <span className="text-sle-secondary">EXPRESS</span>
           </h1>
-          <p className="text-sle-primary/60 dark:text-sle-light/60 text-[10px] md:text-xs tracking-[0.2em] uppercase hidden sm:block font-semibold">
-            Logística Inteligente & Transporte
-          </p>
+          <div className="h-[2px] w-full bg-gradient-to-r from-sle-secondary to-transparent mt-0.5 opacity-50" />
         </div>
       </div>
 
-      <div className="flex items-center gap-3 md:gap-4">
-        <button
+      <div className="flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-3 px-4 py-2 rounded-full border border-white/5 bg-white/5">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+          <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-white/40' : 'text-sle-dark/50'}`}>Nodes Ativos</span>
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={toggleTheme}
-          className="p-2.5 rounded-full bg-white dark:bg-white/10 border border-sle-primary/10 dark:border-white/10 text-sle-primary dark:text-white hover:bg-gray-100 dark:hover:bg-white/20 transition-all shadow-sm"
-          aria-label="Alternar tema"
+          className={`p-3 rounded-2xl border transition-all duration-300 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-sle-dark/5 border-sle-dark/10 text-sle-dark'}`}
         >
           {isDark ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
-
-        <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 backdrop-blur-sm border border-sle-primary/10 dark:border-white/10 shadow-sm">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-          </span>
-          <span className="text-xs font-bold text-sle-primary dark:text-white/90">ONLINE</span>
-        </div>
+        </motion.button>
       </div>
     </motion.header>
   );

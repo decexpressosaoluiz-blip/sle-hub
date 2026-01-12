@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>São Luiz Express | Painel de Resultados</title>
+    <title>São Luiz Express | Hub Estratégico</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚚</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -14,13 +14,13 @@
             colors: {
               sle: {
                 primary: '#2E31B4',
-                primaryDark: '#1A1B62',
+                primaryLight: '#4F52E1',
                 secondary: '#EC1B23',
-                secondaryLight: '#F04A50',
-                dark: '#0F103A',
-                darker: '#060719',
-                light: '#FCFCFE',
-                lightBg: '#F2F2F8',
+                secondaryLight: '#FF4D54',
+                dark: '#0A0B1E',
+                darkCard: '#121431',
+                light: '#F8F9FF',
+                textMuted: '#94A3B8'
               }
             },
             fontFamily: {
@@ -30,22 +30,37 @@
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-      body { margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0F103A; }
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: #2E31B4; border-radius: 10px; }
-      .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-      .dark .glass-card { background: rgba(15, 16, 58, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); }
-      
-      @keyframes gradient-x {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
+      body { 
+        margin: 0; 
+        font-family: 'Inter', sans-serif; 
+        overflow-x: hidden; 
+        background: #0A0B1E; 
+        transition: background-color 0.7s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      .animate-gradient-x {
-        background-size: 200% 200%;
-        animation: gradient-x 5s ease infinite;
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #EC1B23; border-radius: 10px; }
+      
+      .glass-container {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      .dark .glass-card {
+        background: rgba(18, 20, 49, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      @keyframes stream {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      .animate-stream {
+        animation: stream 3s infinite linear;
       }
     </style>
     <script type="importmap">

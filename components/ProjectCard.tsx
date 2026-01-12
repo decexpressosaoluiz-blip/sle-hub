@@ -1,39 +1,37 @@
 import React, { useState, useRef, MouseEvent } from 'react';
 import { Project } from '../types';
-import { ArrowRight, Info } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 interface ProjectCardProps {
   project: Project;
   index: number;
+  isDark: boolean;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, isDark }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
   const cardRef = useRef<HTMLAnchorElement>(null);
 
-  // Parallax Effect Logic
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"]
-  });
-  
-  const springScroll = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
-  const iconY = useTransform(springScroll, [0, 1], [15, -15]);
-  const bgY = useTransform(springScroll, [0, 1], [0, -40]);
+  // Tilt Effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
 
-  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (rect) {
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const id = Date.now();
-      setRipples((prev) => [...prev, { x, y, id }]);
-      setTimeout(() => {
-        setRipples((prev) => prev.filter((r) => r.id !== id));
-      }, 600);
-    }
+  const handleMouseMove = (event: MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    x.set((event.clientX - rect.left) / rect.width - 0.5);
+    y.set((event.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    x.set(0);
+    y.set(0);
   };
 
   return (
@@ -42,85 +40,83 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       href={project.url}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={handleClick}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.03, translateY: -8 }}
-      whileTap={{ scale: 0.98 }}
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`group relative flex flex-col justify-between p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 h-[360px] shadow-xl hover:shadow-2xl 
-        ${project.colorTheme === 'red' ? 'hover:shadow-sle-secondary/30' : 'hover:shadow-sle-primary/30'}
-        bg-white dark:bg-gradient-to-br dark:from-sle-dark/95 dark:to-sle-primary/30
-        border border-sle-primary/10 dark:border-white/10 backdrop-blur-lg
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      style={{ rotateX, rotateY, perspective: 1000 }}
+      className={`group relative flex flex-col justify-between p-8 rounded-[2rem] overflow-hidden h-[380px] transition-all duration-500
+        ${isDark ? 'bg-sle-darkCard border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.3)]' : 'bg-white border-sle-primary/5 shadow-xl'}
       `}
     >
-      {/* Ripple Effects */}
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
-          className="absolute rounded-full bg-sle-secondary/20 animate-ping pointer-events-none"
-          style={{
-            top: ripple.y,
-            left: ripple.x,
-            width: '40px',
-            height: '40px',
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-      ))}
+      {/* Dynamic Hover Background */}
+      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br ${
+        project.colorTheme === 'red' ? 'from-sle-secondary/5 to-transparent' : 'from-sle-primary/5 to-transparent'
+      }`} />
 
-      {/* Info Tooltip */}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute top-4 right-4 bg-sle-darker/95 text-white p-3 rounded-xl text-[10px] z-50 border border-white/10 pointer-events-none max-w-[140px] shadow-2xl"
-          >
-             <p className="leading-relaxed opacity-90">{project.details}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Parallax Background Glow */}
-      <motion.div 
-        style={{ y: bgY }}
-        className={`absolute -top-16 -right-16 w-48 h-48 rounded-full blur-[80px] opacity-10 dark:opacity-30 transition-colors duration-500 pointer-events-none ${project.colorTheme === 'red' ? 'bg-sle-secondary' : 'bg-sle-primary'}`} 
-      />
-
-      <div className="relative z-10 flex-grow">
+      <div className="relative z-10">
+        {/* Icon Case with optimized Contrast */}
         <motion.div 
-          style={{ y: iconY }}
-          className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-xl transition-all duration-300 group-hover:scale-110 ${
+          animate={isHovered ? { scale: 1.1, y: -5 } : { scale: 1, y: 0 }}
+          className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-10 shadow-2xl transition-all duration-500 ${
           project.colorTheme === 'red' 
-            ? 'bg-red-50 text-sle-secondary dark:bg-sle-secondary/20 group-hover:bg-sle-secondary group-hover:text-white' 
-            : 'bg-blue-50 text-sle-primary dark:bg-sle-primary/20 group-hover:bg-sle-primary group-hover:text-white'
+            ? 'bg-sle-secondary/10 text-sle-secondary group-hover:bg-sle-secondary group-hover:text-white' 
+            : 'bg-sle-primary/10 text-sle-primary group-hover:bg-sle-primary group-hover:text-white'
         }`}>
-          <project.icon size={28} />
+          <project.icon size={30} strokeWidth={2} />
         </motion.div>
 
-        <h3 className="text-xl font-extrabold text-sle-primaryDark dark:text-white mb-3 tracking-tight leading-tight group-hover:text-sle-secondary transition-colors">
+        <h3 className={`text-2xl font-black mb-2 tracking-tight transition-colors duration-300 ${isDark ? 'text-white' : 'text-sle-dark'}`}>
           {project.name}
         </h3>
         
-        <p className="text-sle-primaryDark/70 dark:text-sle-light/70 text-sm leading-relaxed">
+        <p className={`text-sm font-medium leading-relaxed transition-opacity duration-300 ${isDark ? 'text-white/40' : 'text-sle-dark/50'}`}>
           {project.description}
         </p>
       </div>
 
-      <div className="relative z-10 pt-4 mt-auto border-t border-sle-primary/5 dark:border-white/5">
-        <div className="flex items-center justify-between">
-           <span className="text-[10px] font-black uppercase tracking-[0.15em] text-sle-primary/40 dark:text-white/40 group-hover:text-sle-secondary transition-colors">
-            Acessar Painel
+      <div className="relative z-10 pt-6">
+        <div className="flex items-center justify-between mb-4">
+           <span className={`text-[10px] font-black uppercase tracking-[0.25em] transition-opacity duration-300 ${isDark ? 'text-white/20 group-hover:text-white/60' : 'text-sle-dark/30 group-hover:text-sle-dark/70'}`}>
+            Acesso Hub
           </span>
-          <div className={`p-2.5 rounded-full transition-all duration-300 ${project.colorTheme === 'red' ? 'bg-red-50 dark:bg-white/10 group-hover:bg-sle-secondary' : 'bg-blue-50 dark:bg-white/10 group-hover:bg-sle-primary'}`}>
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform group-hover:text-white" />
+          <div className={`p-3.5 rounded-full transition-all duration-500 ${
+            project.colorTheme === 'red' ? 'bg-sle-secondary/10 group-hover:bg-sle-secondary shadow-sle-secondary/20' : 'bg-sle-primary/10 group-hover:bg-sle-primary shadow-sle-primary/20'
+          } group-hover:shadow-lg`}>
+            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform group-hover:text-white" />
           </div>
         </div>
+
+        {/* Logistic Stream Progress (Design Refinado) */}
+        <div className={`w-full h-1 rounded-full overflow-hidden ${isDark ? 'bg-white/5' : 'bg-sle-dark/5'}`}>
+          <motion.div 
+            initial={{ width: '10%' }}
+            animate={isHovered ? { width: '100%' } : { width: '15%' }}
+            transition={{ duration: 1, ease: "circOut" }}
+            className={`h-full relative ${project.colorTheme === 'red' ? 'bg-sle-secondary' : 'bg-sle-primary'}`}
+          >
+            <div className="absolute inset-0 animate-stream bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+          </motion.div>
+        </div>
       </div>
+      
+      {/* Card Info Reveal on Hover */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute top-8 right-8 w-40 p-4 rounded-2xl bg-sle-dark/95 border border-white/10 shadow-2xl z-20 pointer-events-none"
+          >
+            <p className="text-[10px] leading-tight text-white/70 font-medium">
+              {project.details}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.a>
   );
 };

@@ -10,8 +10,8 @@ const PROJECTS: Project[] = [
   {
     id: 'faturamento',
     name: 'Faturamento',
-    description: 'Controle financeiro e emissão de CTe.',
-    details: 'Visualize notas fiscais, fluxo de caixa, pagamentos pendentes e relatórios financeiros consolidados.',
+    description: 'Financeiro e Emissões.',
+    details: 'Controle de faturamento, CTe e fluxo financeiro consolidado.',
     url: 'https://painel-faturamento.vercel.app/',
     icon: FileText,
     colorTheme: 'red'
@@ -19,8 +19,8 @@ const PROJECTS: Project[] = [
   {
     id: 'pendencias',
     name: 'Pendências',
-    description: 'Resolução de pendências e ocorrências.',
-    details: 'Gerencie devoluções, ocorrências de entrega e pendências logísticas em um painel centralizado.',
+    description: 'Gestão de Ocorrências.',
+    details: 'Monitoramento de devoluções e pendências de entrega críticas.',
     url: 'https://pendencias-sle.vercel.app/#/login',
     icon: ClipboardList,
     colorTheme: 'blue'
@@ -28,17 +28,17 @@ const PROJECTS: Project[] = [
   {
     id: 'clientes',
     name: 'Painel de Clientes',
-    description: 'Gestão da base de clientes e CRM.',
-    details: 'Acesse o histórico completo de interações, novos leads e status da carteira de clientes em tempo real.',
+    description: 'CRM e Relacionamento.',
+    details: 'Inteligência de mercado e gestão da base ativa de clientes.',
     url: 'https://clientes-overview.vercel.app/',
     icon: Users,
     colorTheme: 'blue'
   },
   {
     id: 'comercial-operacional',
-    name: 'Monitor Comercial / Operacional',
-    description: 'Indicadores comerciais e qualidade operacional.',
-    details: 'Acompanhe KPIs de vendas, performance da equipe e métricas de qualidade operacional em tempo real.',
+    name: 'Monitor Estratégico',
+    description: 'Qualidade e KPIs.',
+    details: 'Performance operacional e indicadores comerciais de alto nível.',
     url: 'https://campanha-qualidade.vercel.app/',
     icon: TrendingUp,
     colorTheme: 'blue'
@@ -46,8 +46,8 @@ const PROJECTS: Project[] = [
   {
     id: 'redespacho',
     name: 'Redespacho',
-    description: 'Logística de entrega e parceiros.',
-    details: 'Monitore cargas redespachadas, status de entregas com parceiros e ocorrências logísticas.',
+    description: 'Logística de Parceiros.',
+    details: 'Integração e monitoramento de cargas via redespachadores.',
     url: 'https://sle-redespacho-25.lovable.app/',
     icon: PackageCheck,
     colorTheme: 'red'
@@ -60,24 +60,19 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    root.classList.toggle('dark', isDark);
   }, [isDark]);
 
-  const toggleTheme = () => setIsDark(!isDark);
-
   return (
-    <div className={`min-h-screen w-full relative overflow-hidden flex flex-col transition-colors duration-500 ${isDark ? 'bg-sle-dark' : 'bg-sle-lightBg'}`}>
+    <div className={`min-h-screen w-full relative flex flex-col transition-all duration-1000 ease-in-out ${isDark ? 'bg-sle-dark text-white' : 'bg-sle-light text-sle-dark'}`}>
       
-      {/* Background Layer */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-b from-sle-dark to-sle-primaryDark transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`} />
-
-        <div className={`absolute inset-0 bg-sle-dark/80 transition-opacity duration-1000 ${isDark ? 'opacity-80' : 'opacity-0'} z-10`} />
-        <div className={`absolute inset-0 bg-sle-lightBg/90 transition-opacity duration-1000 ${isDark ? 'opacity-0' : 'opacity-90'} z-10`} />
+      {/* Background System */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Sync Transition Overlays */}
+        <motion.div 
+          animate={{ opacity: isDark ? 0.8 : 0.95 }}
+          className={`absolute inset-0 z-10 transition-colors duration-700 ${isDark ? 'bg-sle-dark' : 'bg-sle-light'}`} 
+        />
 
         <video
           autoPlay
@@ -85,75 +80,70 @@ const App: React.FC = () => {
           muted
           playsInline
           onLoadedData={() => setIsVideoLoaded(true)}
-          className={`w-full h-full object-cover fixed top-0 left-0 transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-40' : 'opacity-0'} grayscale scale-105`}
+          className={`w-full h-full object-cover fixed top-0 left-0 transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-20' : 'opacity-0'} grayscale`}
         >
           <source src="https://assets.mixkit.co/videos/preview/mixkit-traffic-on-a-highway-at-night-seen-from-above-43048-large.mp4" type="video/mp4" />
         </video>
         
-        <div className={`absolute inset-0 bg-gradient-to-t from-sle-dark via-transparent to-transparent mix-blend-multiply transition-opacity duration-500 ${isDark ? 'opacity-100' : 'opacity-20'} z-10`} />
-        
-        <div className="relative z-10 w-full h-full">
-            <MovingParticles />
+        <div className="absolute inset-0 z-10">
+            <MovingParticles isDark={isDark} />
         </div>
+
+        {/* Brand Accents */}
+        <div className={`absolute top-0 right-0 w-[50%] h-[50%] blur-[160px] rounded-full transition-opacity duration-1000 ${isDark ? 'bg-sle-primary/10 opacity-100' : 'bg-sle-primary/5 opacity-50'}`} />
       </div>
 
+      {/* Content Layer */}
       <div className="relative z-20 flex flex-col min-h-screen">
-        <Header isDark={isDark} toggleTheme={toggleTheme} />
+        <Header isDark={isDark} toggleTheme={() => setIsDark(!isDark)} />
 
-        <main className="flex-grow flex flex-col items-center justify-start px-4 sm:px-6 md:px-12 py-10 md:py-16">
-          <AnimatePresence>
-            <motion.div 
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="w-full max-w-[1700px] mx-auto"
-            >
-              <div className="text-center mb-12 md:mb-20">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="inline-block mb-3 px-4 py-1.5 rounded-full bg-sle-secondary/10 dark:bg-white/10 border border-sle-secondary/20 dark:border-white/10 backdrop-blur-md"
-                >
-                  <span className="text-xs font-bold uppercase tracking-wider text-sle-secondary dark:text-white">Central de Operações</span>
-                </motion.div>
-
-                <motion.h2 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
-                  className="text-4xl md:text-5xl lg:text-7xl font-black text-sle-primaryDark dark:text-white tracking-tight mb-4 md:mb-6 leading-tight"
-                >
-                  Painel de <span className="text-transparent bg-clip-text bg-gradient-to-r from-sle-secondary via-sle-secondaryLight to-orange-500 animate-gradient-x">Resultados</span>
-                </motion.h2>
-                
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                  className="text-base md:text-lg text-sle-primary/70 dark:text-sle-light/70 max-w-2xl mx-auto px-4"
-                >
-                  Acesse todas as ferramentas estratégicas e operacionais da São Luiz Express em um ambiente integrado e seguro.
-                </motion.p>
-              </div>
-
-              <motion.div 
-                layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 auto-rows-fr"
+        <main className="flex-grow flex flex-col items-center justify-center px-6 sm:px-12 py-12 lg:py-24">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="w-full max-w-[1750px] mx-auto"
+          >
+            <div className="text-center mb-16 lg:mb-24">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                className="text-5xl md:text-7xl lg:text-8xl font-[900] tracking-tighter mb-4"
               >
-                {PROJECTS.map((project, index) => (
-                    <ProjectCard key={project.id} project={project} index={index} />
-                ))}
-              </motion.div>
+                Gestão <span className="text-sle-secondary inline-block hover:scale-105 transition-transform duration-500 cursor-default">Logística</span>
+              </motion.h2>
+              
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className={`text-lg md:text-xl font-medium max-w-xl mx-auto opacity-60`}
+              >
+                Hub estratégico para monitoramento de indicadores e ferramentas São Luiz Express.
+              </motion.p>
+            </div>
 
-            </motion.div>
-          </AnimatePresence>
+            {/* Responsive Grid System: 1 to 5 cols */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8">
+              {PROJECTS.map((project, index) => (
+                  <ProjectCard key={project.id} project={project} index={index} isDark={isDark} />
+              ))}
+            </div>
+          </motion.div>
         </main>
 
-        <footer className={`w-full py-6 text-center relative z-20 border-t border-sle-primary/10 dark:border-white/5 backdrop-blur-sm mt-auto ${isDark ? 'bg-black/20' : 'bg-white/30'}`}>
-          <p className="text-sle-primary/40 dark:text-sle-light/40 text-sm font-medium">
-            © {new Date().getFullYear()} São Luiz Express. Logística Inteligente.
-          </p>
+        <footer className="w-full py-12 flex justify-center">
+          <motion.button 
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`group relative px-10 py-5 rounded-full overflow-hidden transition-all duration-300 border border-white/5 glass-container`}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-sle-primary/10 to-sle-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <p className={`text-xs font-black tracking-[0.4em] uppercase transition-colors ${isDark ? 'text-white/30 group-hover:text-white/60' : 'text-sle-dark/40 group-hover:text-sle-dark/80'}`}>
+              São Luiz Express • Tecnologia & Inteligência
+            </p>
+          </motion.button>
         </footer>
       </div>
     </div>
